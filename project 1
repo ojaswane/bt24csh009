@@ -1,0 +1,225 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void display(int arr[], int n) {
+    printf("Array elements: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+void insertAtBeginning(int arr[], int *n, int value) {
+    for (int i = *n; i > 0; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[0] = value;
+    (*n)++;
+}
+
+void insertAtEnd(int arr[], int *n, int value) {
+    arr[*n] = value;
+    (*n)++;
+}
+
+void insertAtPosition(int arr[], int *n, int pos, int value) {
+    if (pos < 0 || pos > *n) {
+        printf("Invalid position!\n");
+        return;
+    }
+    for (int i = *n; i > pos; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[pos] = value;
+    (*n)++;
+}
+
+void deleteAtBeginning(int arr[], int *n) {
+    if (*n <= 0) {
+        printf("Array is empty!\n");
+        return;
+    }
+    for (int i = 0; i < *n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    (*n)--;
+}
+
+void deleteAtEnd(int arr[], int *n) {
+    if (*n <= 0) {
+        printf("Array is empty!\n");
+        return;
+    }
+    (*n)--;
+}
+
+void deleteAtPosition(int arr[], int *n, int pos) {
+    if (pos < 0 || pos >= *n) {
+        printf("Invalid position!\n");
+        return;
+    }
+    for (int i = pos; i < *n - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    (*n)--;
+}
+
+int linearSearch(int arr[], int n, int value) {
+    for (int i = 0; i < n; i++) {
+        if (arr[i] == value) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void sort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void sortEvenIndices(int arr[], int n) {
+    for (int i = 0; i < n - 1; i += 2) {
+        for (int j = 0; j < n - 2; j += 2) {
+            if (arr[j] > arr[j + 2]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 2];
+                arr[j + 2] = temp;
+            }
+        }
+    }
+}
+
+void sortOddIndices(int arr[], int n) {
+    for (int i = 1; i < n - 1; i += 2) {
+        for (int j = 1; j < n - 2; j += 2) {
+            if (arr[j] > arr[j + 2]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 2];
+                arr[j + 2] = temp;
+            }
+        }
+    }
+}
+
+void sortEvenElements(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] % 2 == 0 && arr[j + 1] % 2 == 0 && arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void sortOddElements(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (arr[j] % 2 != 0 && arr[j + 1] % 2 != 0 && arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the size of the array: ");
+    scanf("%d", &n);
+
+    int arr[100]; // Assuming maximum size of the array is 100
+
+    printf("Enter %d elements of the array: ", n);
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    int choice, value, pos;
+    do {
+        printf("\nMenu:\n");
+        printf("1. Display array\n");
+        printf("2. Insert at beginning\n");
+        printf("3. Insert at end\n");
+        printf("4. Insert at specific position\n");
+        printf("5. Delete at beginning\n");
+        printf("6. Delete at end\n");
+        printf("7. Delete at specific position\n");
+        printf("8. Search an element\n");
+        printf("9. Sort array\n");
+        printf("10. Sort even indices\n");
+        printf("11. Sort odd indices\n");
+        printf("12. Sort even elements\n");
+        printf("13. Sort odd elements\n");
+        printf("14. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                display(arr, n);
+                break;
+            case 2:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insertAtBeginning(arr, &n, value);
+                break;
+            case 3:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                insertAtEnd(arr, &n, value);
+                break;
+            case 4:
+                printf("Enter position and value to insert: ");
+                scanf("%d %d", &pos, &value);
+                insertAtPosition(arr, &n, pos, value);
+                break;
+            case 5:
+                deleteAtBeginning(arr, &n);
+                break;
+            case 6:
+                deleteAtEnd(arr, &n);
+                break;
+            case 7:
+                printf("Enter position to delete: ");
+                scanf("%d", &pos);
+                deleteAtPosition(arr, &n, pos);
+                break;
+            case 8:
+                printf("Enter value to search: ");
+                scanf("%d", &value);
+                pos = linearSearch(arr, n, value);
+                if (pos != -1) {
+                    printf("Element found at position %d\n", pos);
+                } else {
+                    printf("Element not found!\n");
+                }
+                break;
+            case 9:
+                sort(arr, n);
+                printf("Array sorted.\n");
+                break;
+            case 10:
+                sortEvenIndices(arr, n);
+                printf("Even indices sorted.\n");
+                break;
+            case 11:
+                sortOddIndices(arr, n);
+                printf("Odd indices sorted.\n");
+                break;
+            case 12:
+                sortEvenElements(arr, n);
+                printf("Even elements sorted.\n");
+                break;
+            case 13:
+                sortOddElements
