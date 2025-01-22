@@ -1,225 +1,294 @@
 #include <stdio.h>
-#include <stdlib.h>
+int main(){
+    int size;
+    printf("Enter the size of array : ");
+    scanf("%d", &size);
+    printf("\n");
 
-void display(int arr[], int n) {
-    printf("Array elements: ");
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
+    int array[size + 10];
+    for(int aa = 0; aa < size; aa++){
+        printf("Enter %d element : ", (aa + 1));
+        scanf("%d", &array[aa]);
     }
     printf("\n");
-}
 
-void insertAtBeginning(int arr[], int *n, int value) {
-    for (int i = *n; i > 0; i--) {
-        arr[i] = arr[i - 1];
+    printf("Entered array is-\n");
+    for(int ab = 0; ab < size; ab++){
+        printf("%d\t", array[ab]);
     }
-    arr[0] = value;
-    (*n)++;
-}
+    printf("\n\n");
 
-void insertAtEnd(int arr[], int *n, int value) {
-    arr[*n] = value;
-    (*n)++;
-}
+    printf("Enter the number to perform one of the following operations:\n1. Insert an element\t2. Delete an element\t3. Search for an element\t4. Sort the Array\n");
+    int choice;
+    scanf("%d", &choice);
+    printf("\n");
 
-void insertAtPosition(int arr[], int *n, int pos, int value) {
-    if (pos < 0 || pos > *n) {
-        printf("Invalid position!\n");
-        return;
-    }
-    for (int i = *n; i > pos; i--) {
-        arr[i] = arr[i - 1];
-    }
-    arr[pos] = value;
-    (*n)++;
-}
+    if(choice == 1){
+        printf("Insert element at:\n1. Beginning\t2. End\t3. At specific position\n");
+        int choice_insert;
+        scanf("%d", &choice_insert);
 
-void deleteAtBeginning(int arr[], int *n) {
-    if (*n <= 0) {
-        printf("Array is empty!\n");
-        return;
-    }
-    for (int i = 0; i < *n - 1; i++) {
-        arr[i] = arr[i + 1];
-    }
-    (*n)--;
-}
+        if(choice_insert == 1){
+            int insert_beginning;
+            printf("Enter the element to add at beginning: ");
+            scanf("%d", &insert_beginning);
 
-void deleteAtEnd(int arr[], int *n) {
-    if (*n <= 0) {
-        printf("Array is empty!\n");
-        return;
-    }
-    (*n)--;
-}
+            for(int ac = size; ac > 0; ac--){
+                array[ac] = array[ac - 1];
+            }
 
-void deleteAtPosition(int arr[], int *n, int pos) {
-    if (pos < 0 || pos >= *n) {
-        printf("Invalid position!\n");
-        return;
-    }
-    for (int i = pos; i < *n - 1; i++) {
-        arr[i] = arr[i + 1];
-    }
-    (*n)--;
-}
+            array[0] = insert_beginning;
 
-int linearSearch(int arr[], int n, int value) {
-    for (int i = 0; i < n; i++) {
-        if (arr[i] == value) {
-            return i;
-        }
-    }
-    return -1;
-}
+            size++;
 
-void sort(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] > arr[j + 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+            printf("New array is-\n");
+            for(int ad = 0; ad < size; ad++){
+                printf("%d\t", array[ad]);
             }
         }
-    }
-}
 
-void sortEvenIndices(int arr[], int n) {
-    for (int i = 0; i < n - 1; i += 2) {
-        for (int j = 0; j < n - 2; j += 2) {
-            if (arr[j] > arr[j + 2]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 2];
-                arr[j + 2] = temp;
+        else if(choice_insert == 2){
+            int insert_end;
+            printf("Enter the element to add at end : ");
+            scanf("%d", &insert_end);
+
+            array[size] = insert_end;
+            size++;
+
+            printf("New array is-\n");
+            for(int ae = 0; ae < size; ae++){
+                printf("%d\t", array[ae]);
             }
         }
-    }
-}
 
-void sortOddIndices(int arr[], int n) {
-    for (int i = 1; i < n - 1; i += 2) {
-        for (int j = 1; j < n - 2; j += 2) {
-            if (arr[j] > arr[j + 2]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 2];
-                arr[j + 2] = temp;
+        else if(choice_insert == 3){
+            int insert_position;
+            printf("Enter the position to add element: ");
+            scanf("%d", &insert_position);
+            printf("\n");
+
+            int insert_element;
+            printf("Enter the element to add at position: ");
+            scanf("%d", &insert_element);
+            printf("\n");
+
+            for(int af = size; af >= insert_position; af--){
+                array[af] = array[af - 1];
+            }
+
+            array[insert_position - 1] = insert_element;
+            size++;
+
+            printf("New array is-\n");
+            for(int ag = 0; ag < size; ag++){
+                printf("%d\t", array[ag]);
             }
         }
-    }
-}
-
-void sortEvenElements(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] % 2 == 0 && arr[j + 1] % 2 == 0 && arr[j] > arr[j + 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-            }
+        
+        else{
+            printf("Invalid Input.");
         }
     }
-}
 
-void sortOddElements(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - i - 1; j++) {
-            if (arr[j] % 2 != 0 && arr[j + 1] % 2 != 0 && arr[j] > arr[j + 1]) {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+    else if(choice == 2){
+        printf("Delete element at-\n1. Start\t2. End\t3. At specific position\n");
+        int choice_delete;
+        scanf("%d", &choice_delete);
+        printf("\n");
+
+        if(choice_delete == 1){
+            for(int ah = 0; ah < size - 1; ah++){
+                array[ah] = array[ah + 1];
+            }
+            array[size - 1] = '\0';
+            size--;
+
+            printf("New array is-\n");
+            for(int ai = 0; ai < size; ai++){
+                printf("%d\t", array[ai]);
             }
         }
+
+        else if(choice_delete == 2){
+            array[size - 1] = '\0';
+            size--;
+
+            printf("New array-\n");
+            for(int aj = 0; aj < size; aj++){
+                printf("%d\t", array[aj]);
+            }
+        }
+
+        else if(choice_delete == 3){
+            printf("Enter the position of element to delete: ");
+            int delete_position;
+            scanf("%d", &delete_position);
+
+            for(int ak = delete_position - 1; ak < size - 1; ak++){
+                array[ak] = array[ak + 1];
+            }
+            array[size - 1] = '\0';
+            size--;
+
+            printf("New array-\n");
+            for(int al = 0; al < size; al++){
+                printf("%d\t", array[al]);
+            }
+        }
+    
+        else{
+            printf("Invalid Input.");
+        }
     }
-}
 
-int main() {
-    int n;
-    printf("Enter the size of the array: ");
-    scanf("%d", &n);
+    else if(choice == 3){
+        printf("Enter the element to search for: ");
+        int search_element;
+        scanf("%d", &search_element);
 
-    int arr[100]; // Assuming maximum size of the array is 100
-
-    printf("Enter %d elements of the array: ", n);
-    for (int i = 0; i < n; i++) {
-        scanf("%d", &arr[i]);
+        int search_temp = 0;
+        for(int am = 0; am < size; am++){
+            if(search_element == array[am]){
+                printf("Element found at index %d.", am);
+            }
+            else{
+                search_temp++;
+            }
+        }
+        if(search_temp == size){
+            printf("No element found.");
+        }
     }
 
-    int choice, value, pos;
-    do {
-        printf("\nMenu:\n");
-        printf("1. Display array\n");
-        printf("2. Insert at beginning\n");
-        printf("3. Insert at end\n");
-        printf("4. Insert at specific position\n");
-        printf("5. Delete at beginning\n");
-        printf("6. Delete at end\n");
-        printf("7. Delete at specific position\n");
-        printf("8. Search an element\n");
-        printf("9. Sort array\n");
-        printf("10. Sort even indices\n");
-        printf("11. Sort odd indices\n");
-        printf("12. Sort even elements\n");
-        printf("13. Sort odd elements\n");
-        printf("14. Exit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                display(arr, n);
-                break;
-            case 2:
-                printf("Enter value to insert: ");
-                scanf("%d", &value);
-                insertAtBeginning(arr, &n, value);
-                break;
-            case 3:
-                printf("Enter value to insert: ");
-                scanf("%d", &value);
-                insertAtEnd(arr, &n, value);
-                break;
-            case 4:
-                printf("Enter position and value to insert: ");
-                scanf("%d %d", &pos, &value);
-                insertAtPosition(arr, &n, pos, value);
-                break;
-            case 5:
-                deleteAtBeginning(arr, &n);
-                break;
-            case 6:
-                deleteAtEnd(arr, &n);
-                break;
-            case 7:
-                printf("Enter position to delete: ");
-                scanf("%d", &pos);
-                deleteAtPosition(arr, &n, pos);
-                break;
-            case 8:
-                printf("Enter value to search: ");
-                scanf("%d", &value);
-                pos = linearSearch(arr, n, value);
-                if (pos != -1) {
-                    printf("Element found at position %d\n", pos);
-                } else {
-                    printf("Element not found!\n");
+    else if(choice == 4){
+        printf("Enter your choice-\n1. Complete sort\t2. Sort at even places\t 3. Sort at odd places\t4. Sort for odd elements\n5. Sort for even elements\n");
+        int sort_choice;
+        scanf("%d", &sort_choice);
+        if(sort_choice == 1){
+            for(int an = 0; an < size - 1; an++){
+                int sort_min = an;
+                for(int ao = an + 1; ao < size; ao++){
+                    if(array[ao] < array[sort_min]){
+                        sort_min = ao;
+                    }
+                    if(sort_min != an){
+                        int sort_temp = array[an];
+                        array[an] = array[sort_min];
+                        array[sort_min] = sort_temp;
+                    }
                 }
-                break;
-            case 9:
-                sort(arr, n);
-                printf("Array sorted.\n");
-                break;
-            case 10:
-                sortEvenIndices(arr, n);
-                printf("Even indices sorted.\n");
-                break;
-            case 11:
-                sortOddIndices(arr, n);
-                printf("Odd indices sorted.\n");
-                break;
-            case 12:
-                sortEvenElements(arr, n);
-                printf("Even elements sorted.\n");
-                break;
-            case 13:
-                sortOddElements
+            }
+
+            printf("New array-\n");
+            for(int ap = 0; ap < size; ap++){
+                printf("%d\t", array[ap]);
+            }
+        }
+
+        else if(sort_choice == 2){
+            for(int an = 0; an < size - 1; an++){
+                int sort_min = an;
+                for(int ao = an + 1; ao < size; ao++){
+                    if(an % 2 != 0 && ao % 2 != 0){
+                        if(array[ao] < array[sort_min]){
+                        sort_min = ao;
+                        }
+                        if(sort_min != an){
+                            int sort_temp = array[an];
+                            array[an] = array[sort_min];
+                            array[sort_min] = sort_temp;
+                        }
+                    }
+                    
+                }
+            }
+
+            printf("New array-\n");
+            for(int ap = 0; ap < size; ap++){
+                printf("%d\t", array[ap]);
+            }
+        }
+        
+        else if(sort_choice == 3){
+            for(int an = 0; an < size - 1; an++){
+                int sort_min = an;
+                for(int ao = an + 1; ao < size; ao++){
+                    if(an % 2 == 0 && ao % 2 == 0){
+                        if(array[ao] < array[sort_min]){
+                        sort_min = ao;
+                        }
+                        if(sort_min != an){
+                            int sort_temp = array[an];
+                            array[an] = array[sort_min];
+                            array[sort_min] = sort_temp;
+                        }
+                    }
+                    
+                }
+            }
+
+            printf("New array-\n");
+            for(int ap = 0; ap < size; ap++){
+                printf("%d\t", array[ap]);
+            }
+        }
+
+        else if(sort_choice == 4){
+            for(int an = 0; an < size - 1; an++){
+                int sort_min = an;
+                for(int ao = an + 1; ao < size; ao++){
+                    if(array[an] % 2 != 0 && array[ao] % 2 != 0){
+                        if(array[ao] < array[sort_min]){
+                        sort_min = ao;
+                        }
+                        if(sort_min != an){
+                            int sort_temp = array[an];
+                            array[an] = array[sort_min];
+                            array[sort_min] = sort_temp;
+                        }
+                    }
+                    
+                }
+            }
+
+            printf("New array-\n");
+            for(int ap = 0; ap < size; ap++){
+                printf("%d\t", array[ap]);
+            }
+        }
+        
+        else if(sort_choice == 5){
+            for(int an = 0; an < size - 1; an++){
+                int sort_min = an;
+                for(int ao = an + 1; ao < size; ao++){
+                    if(array[an] % 2 == 0 && array[ao] % 2 == 0){
+                        if(array[ao] < array[sort_min]){
+                        sort_min = ao;
+                        }
+                        if(sort_min != an){
+                            int sort_temp = array[an];
+                            array[an] = array[sort_min];
+                            array[sort_min] = sort_temp;
+                        }
+                    }
+                    
+                }
+            }
+
+            printf("New array-\n");
+            for(int ap = 0; ap < size; ap++){
+                printf("%d\t", array[ap]);
+            }
+        }
+
+        else{
+            printf("Invalid input");
+        }
+    }
+
+    else{
+        printf("Invalid Input.");
+    }
+
+    return 0;
+}
