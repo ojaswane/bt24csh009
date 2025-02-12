@@ -2,105 +2,184 @@
 
 // Question 1: Quick Sort & Merge Sort
 
+//merge sort
 #include <stdio.h>
 
-void display(int *arr, int size);
-void swap (int *a, int *b);
+// Function to merge two subarrays
+void merge(int arr[], int left, int mid, int right) {
+    int i, j, k;
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
 
-int Partition(int *arr, int lb, int ub);
-void QuickSort(int *arr, int lb, int ub);
+    // Temporary arrays
+    int L[n1], R[n2];
 
-void Merge(int *arr, int l, int m, int r);
-void MergeSort(int *arr, int l, int r);
+    // Copy data to temp arrays
+    for (i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
 
-int main() {
-    int A[] = {8, 5, 7, 3, 2};
-    int n = sizeof(A) / sizeof(A[0]);
+    // Merge the two arrays
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = left; // Initial index of merged subarray
 
-    int B[] = {8, 5, 7, 3, 2};
-    int m = sizeof(B) / sizeof(B[0]);
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        } else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
 
-    printf("Sorting array using Quick Sort\n");
-    display(A, n);
+    // Copy any remaining elements of L[]
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
 
-    QuickSort(A, 0, n - 1);
-    display(A, n);
+    // Copy any remaining elements of R[]
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+}
 
+// Function to implement Merge Sort
+void mergeSort(int arr[], int left, int right) {
+    if (left < right) {
+        int mid = left + (right - left) / 2; // Avoids overflow
+
+        // Recursively sort first and second halves
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+
+        // Merge the sorted halves
+        merge(arr, left, mid, right);
+    }
+}
+
+// Function to print an array
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
     printf("\n");
+}
 
-    printf("Sorting array using Merge Sort\n");
-    display(B, m);
+// Main function to test the Merge Sort
+int main() {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int size = sizeof(arr) / sizeof(arr[0]);
 
-    MergeSort(B, 0, n - 1);
-    display(B, m);
+    printf("Original array: \n");
+    printArray(arr, size);
+
+    mergeSort(arr, 0, size - 1);
+
+    printf("Sorted array: \n");
+    printArray(arr, size);
 
     return 0;
 }
 
-void display(int *arr, int size) {
-    for (int i = 0; i < size; i++) printf("%d\t", arr[i]);
-    printf("\n");
-}
 
-void swap (int *a, int *b) {
+//quick sort 
+#include <stdio.h>
+
+// Function to swap two elements
+void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
 
-int Partition(int *arr, int lb, int ub) {
-    int pivot = arr[lb];
-    int start = lb;
-    int end = ub;
+// Partition function
+int partition(int arr[], int low, int high) {
+    int pivot = arr[high]; // Choosing the last element as the pivot
+    int i = low - 1; // Index of smaller element
 
-    while (start < end) {
-        while (arr[start] <= pivot && start < ub) start++;
-        while (arr[end] > pivot && end > lb) end--;
-        if (start < end) swap(&arr[start], &arr[end]);
-    }
-    swap(&arr[end], &arr[lb]);
-    return end;
-}
-
-void QuickSort(int *arr, int lb, int ub) {
-    if (lb < ub) {
-        int pos = Partition(arr, lb, ub);
-        QuickSort(arr, lb, pos - 1);
-        QuickSort(arr, pos + 1, ub);
-    }
-}
-
-void Merge(int *arr, int l, int m, int r) {
-    int i, j, k;
-    int n1 = m - l + 1;
-    int n2 = r - m;
-
-    int L[n1], R[n2];
-
-    for (int i = 0; i < n1; i++) L[i] = arr[l + i];
-    for (int j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
-
-    i = j = 0;
-    k = l;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k++] = L[i++];
-        }
-        else {
-            arr[k++] = R[j++];
+    for (int j = low; j < high; j++) {
+        if (arr[j] < pivot) { // If current element is smaller than pivot
+            i++;
+            swap(&arr[i], &arr[j]);
         }
     }
-    while (i < n1) arr[k++] = L[i++];
-    while (j < n2) arr[k++] = R[j++];
+
+    swap(&arr[i + 1], &arr[high]); // Place pivot in correct position
+    return (i + 1); // Return the partition index
 }
 
-void MergeSort(int *arr, int l, int r) {
-    if (l < r) {
-        int m = l + (r - l) / 2;
+// QuickSort function
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high); // Partitioning index
 
-        MergeSort(arr, l, m);
-        MergeSort(arr, m + 1, r);
-        Merge(arr, l, m, r);
+        // Recursively sort the subarrays
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Function to print an array
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++)
+        printf("%d ", arr[i]);
+    printf("\n");
+}
+
+// Main function to test Quick Sort
+int main() {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int size = sizeof(arr) / sizeof(arr[0]);
+
+    printf("Original array: \n");
+    printArray(arr, size);
+
+    quickSort(arr, 0, size - 1);
+
+    printf("Sorted array: \n");
+    printArray(arr, size);
+
+    return 0;
+}
+
+
+
+//ouestion 2 
+#include <stdio.h>
+
+void reverse_subarray(int *arr, int low, int high);
+
+int main() {
+    int A[] = {8, 5, 7, 3, 2, 9, 1, 6};
+    int n = sizeof(A) / sizeof(A[0]);
+
+    for (int i = 0; i < n; i++) printf("%d\t", A[i]);
+    printf("\n");
+
+    reverse_subarray(A, 2, 6);
+
+    for (int i = 0; i < n; i++) 
+{
+    printf("%d\t", A[i]);
+}
+    return 0;
+}
+
+void reverse_subarray(int *arr, int low, int high) {
+    int i = low, j = high;
+    
+    while (i < j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+        i++;
+        j--;
     }
 }
