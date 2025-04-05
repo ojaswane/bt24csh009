@@ -1,0 +1,179 @@
+// Implementation of stack using array.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#define N 5
+
+int stack[N];
+int top = -1;
+
+/* FUNCTION DECLARATIONS */
+void Push(int num);
+void Pop();
+void Display();
+
+int main() {
+    for (int i = 1; i <= 5; i++) Push(2 * i);
+
+    Display();
+
+    for (int i = 1; i <= 5; i++) if (i % 2 == 0) Pop();
+    
+    Display();
+
+    return 0;
+}
+
+/* FUNCTION DEFINITIONS */
+void Display() {
+    int i = top;
+    for (; i >= 0; i--) printf("| %2d |\n", stack[i]);
+}
+
+void Push(int num) {
+    if (top == N - 1) { printf("Stack Overflow!\n"); return; }
+    stack[++top] = num;
+}
+
+void Pop() {
+    if (top == -1) { printf("Stack Underflow!\n"); return; }
+    printf("Popped: %d\n", stack[top]);
+    top--;
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//stack using doubly linked list
+#include <stdio.h>
+#include <stdlib.h>
+
+// Doubly Linked List Node
+struct Node {
+    int data;
+    struct Node* next;
+    struct Node* prev;
+};
+
+/* FUNCTION DECLARATIONS */
+void Push(int num);
+void Pop();
+void Display();
+
+struct Node* top = NULL;
+
+int main() {
+    for (int i = 1; i <= 10; i++) Push(2 * i);
+
+    Display();
+
+    Pop();
+    Pop();
+
+    printf("Popped twice.\n");
+
+    Display();
+
+    return 0;
+}
+
+/* FUNCTION DEFINITIONS */
+
+void Display() {
+    struct Node* p = top;
+    if (top == NULL) {
+        printf("Stack is empty.\n");
+        return;
+    }
+    while (p != NULL) {
+        printf("| %2d |\n", p->data);
+        p = p->next;
+    }
+}
+
+void Push(int num) {
+    struct Node* p = (struct Node*)malloc(sizeof(struct Node));
+
+    p->data = num;
+    p->next = top;  
+    p->prev = NULL; 
+
+    if (top != NULL) {
+        top->prev = p; 
+    }
+
+    top = p;
+}
+
+void Pop() {
+    if (top == NULL) {
+        printf("Stack is empty. Nothing to pop.\n");
+        return;
+    }
+
+    struct Node* temp = top;
+    top = top->next;  
+
+    if (top != NULL) {
+        top->prev = NULL; 
+    }
+
+    free(temp); 
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Implementation of stack using singly linke list .
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Singly Linked List
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+/* FUNCTION DECLARATIONS */
+void Push(int num);
+void Pop();
+void Display();
+
+struct Node* top = NULL;
+
+int main() {
+    for (int i = 1; i <= 10; i++) Push(2 * i);
+
+    Display();
+
+    Pop();
+    Pop();
+
+    printf("Popped twice.\n");
+
+    Display();
+
+    return 0;
+}
+
+/* FUNCTION DEFINITIONS */
+void Display() {
+    struct Node* p = top;
+    while (p != NULL) {
+        printf("| %2d |\n", p->data);
+        p = p->next;
+    }
+}
+
+void Push (int num) {
+    struct Node* p = (struct Node *)malloc(sizeof(struct Node));
+    p->data = num;
+    p->next = top;
+    top = p;
+}
+
+void Pop() {
+    struct Node* p = top;
+    top = p->next;
+    free(p);
+}
