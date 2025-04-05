@@ -1,0 +1,188 @@
+// ROTATE LINKED LIST 
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition for singly-linked list node
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+// Function to create a new node
+struct ListNode* newNode(int val) {
+    struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    node->val = val;
+    node->next = NULL;
+    return node;
+}
+
+// Function to print the linked list
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->val);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Function to rotate the linked list to the right by k places
+struct ListNode* rotateRight(struct ListNode* head, int k) {
+    if (head == NULL || head->next == NULL || k == 0) {
+        return head;
+    }
+    
+    // Calculate the length of the list
+    struct ListNode* current = head;
+    int length = 1;
+    while (current->next != NULL) {
+        current = current->next;
+        length++;
+    }
+    
+    // Connect the last node to the head to make it circular
+    current->next = head;
+    
+    // Adjust k if it's larger than the length
+    k = k % length;
+    
+    // Find the new tail: (length - k - 1)th node
+    // and the new head: (length - k)th node
+    int steps = length - k;
+    current = head;
+    for (int i = 0; i < steps - 1; i++) {
+        current = current->next;
+    }
+    
+    // The new head is the next node
+    struct ListNode* newHead = current->next;
+    
+    // Break the circle
+    current->next = NULL;
+    
+    return newHead;
+}
+
+// Main function to test the rotation
+int main() {
+    // Create a sample linked list: 1->2->3->4->5
+    struct ListNode* head = newNode(1);
+    head->next = newNode(2);
+    head->next->next = newNode(3);
+    head->next->next->next = newNode(4);
+    head->next->next->next->next = newNode(5);
+    
+    printf("Original list: ");
+    printList(head);
+    
+    int k = 2;
+    head = rotateRight(head, k);
+    
+    printf("List after rotating right by %d: ", k);
+    printList(head);
+    
+    // Free the memory (in a real program, you should free all nodes)
+    
+    return 0;
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//Remove duplicate in an unsorted linked list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definition for singly-linked list node
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+// Function to create a new node
+struct ListNode* newNode(int val) {
+    struct ListNode* node = (struct ListNode*)malloc(sizeof(struct ListNode));
+    node->val = val;
+    node->next = NULL;
+    return node;
+}
+
+// Function to print the linked list
+void printList(struct ListNode* head) {
+    while (head != NULL) {
+        printf("%d ", head->val);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+// Function to insert a node in sorted order
+void sortedInsert(struct ListNode** head, struct ListNode* newNode) {
+    struct ListNode* current;
+    // Special case for the head end
+    if (*head == NULL || (*head)->val >= newNode->val) {
+        newNode->next = *head;
+        *head = newNode;
+    } else {
+        // Locate the node before the point of insertion
+        current = *head;
+        while (current->next != NULL && current->next->val < newNode->val) {
+            current = current->next;
+        }
+        newNode->next = current->next;
+        current->next = newNode;
+    }
+}
+
+// Function to sort the linked list using insertion sort
+void insertionSort(struct ListNode** head) {
+    struct ListNode* sorted = NULL;
+    struct ListNode* current = *head;
+    
+    while (current != NULL) {
+        struct ListNode* next = current->next;
+        sortedInsert(&sorted, current);
+        current = next;
+    }
+    *head = sorted;
+}
+
+// Function to remove duplicates from a sorted linked list
+void removeDuplicates(struct ListNode* head) {
+    struct ListNode* current = head;
+    struct ListNode* next_next;
+    
+    if (current == NULL) return;
+    
+    while (current->next != NULL) {
+        if (current->val == current->next->val) {
+            next_next = current->next->next;
+            free(current->next);
+            current->next = next_next;
+        } else {
+            current = current->next;
+        }
+    }
+}
+
+// Main function to test the program
+int main() {
+    struct ListNode* head = newNode(5);
+    
+    printf("Original list: ");
+    printList(head);
+    
+    // Step 1: Sort the list
+    insertionSort(&head);
+    printf("Sorted list: ");
+    printList(head);
+    
+    // Step 2: Remove duplicates
+    removeDuplicates(head);
+    printf("List after removing duplicates: ");
+    printList(head);
+    return 0;
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+// To make 2 stacks using an single array
